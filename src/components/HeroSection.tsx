@@ -250,17 +250,17 @@ export function HeroSection() {
           </p>
         </div>
 
-        <div className="relative z-10 flex h-full items-center px-[8vw]">
-          <div className="max-w-[540px]">
+        <div className="relative z-10 mx-auto flex h-full max-w-content items-center px-6 md:px-10">
+          <div className="relative max-w-[540px]">
             {heroStages.map((stage, index) => {
               const isActive = activeStage === index;
 
               return (
                 <div
                   key={index}
-                  className={`absolute left-[8vw] top-1/2 max-w-[540px] -translate-y-1/2 transition-opacity duration-[250ms] ${
-                    isActive ? "opacity-100" : "pointer-events-none opacity-0"
-                  }`}
+                  className={`max-w-[540px] transition-opacity duration-[250ms] ${
+                    index === 0 ? "" : "absolute left-0 top-0"
+                  } ${isActive ? "opacity-100" : "pointer-events-none opacity-0"}`}
                   style={{ willChange: "opacity" }}
                 >
                   {"heading" in stage ? (
