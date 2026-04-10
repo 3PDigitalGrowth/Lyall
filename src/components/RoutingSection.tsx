@@ -1,12 +1,17 @@
+"use client";
+
 import Link from "next/link";
 
 import { routingCards } from "@/lib/site-data";
 import { SectionHeading } from "@/components/SectionHeading";
+import { useReveal } from "@/hooks/useReveal";
 
 export function RoutingSection() {
+  const revealRef = useReveal<HTMLDivElement>();
+
   return (
-    <section id="training" className="grain bg-cream px-6 py-20 md:px-10 md:py-32">
-      <div className="mx-auto max-w-7xl">
+    <section id="training" className="grain bg-cream px-6 py-section-mobile md:px-10 md:py-section">
+      <div ref={revealRef} className="mx-auto max-w-content">
         <SectionHeading
           label="WORK WITH LYALL"
           title="Two ways to work together."
@@ -14,29 +19,29 @@ export function RoutingSection() {
           centred
         />
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-2">
+        <div className="mt-heading-gap grid gap-8 lg:grid-cols-2">
           {routingCards.map((card) => (
             <article
               key={card.title}
-              className={`border-l-4 bg-white p-10 shadow-editorial ${card.accentClass}`}
+              className={`border-l-4 bg-white p-10 shadow-card transition-all duration-250 hover:-translate-y-[2px] hover:shadow-card-hover ${card.accentClass}`}
             >
-              <p className="font-body text-xs font-medium uppercase tracking-editorial text-charcoal/55">
+              <p className="font-body text-label uppercase text-muted">
                 {card.eyebrow}
               </p>
-              <h3 className="mt-5 font-display text-3xl font-bold text-navy">
+              <h3 className="mt-5 font-display text-card-title font-bold text-navy">
                 {card.title}
               </h3>
-              <p className="mt-5 font-body text-base leading-8 text-charcoal/80">
+              <p className="mt-5 font-body text-body-primary text-body">
                 {card.description}
               </p>
               {"note" in card ? (
-                <p className="mt-4 font-body text-sm text-charcoal/55">{card.note}</p>
+                <p className="mt-4 font-body text-body-secondary text-muted">{card.note}</p>
               ) : null}
               <Link
                 href={card.href}
-                className="mt-8 inline-flex bg-navy px-6 py-3 font-body text-sm font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-teal"
+                className="mt-8 inline-flex border border-navy px-9 py-4 font-body text-[15px] font-medium tracking-[0.03em] text-navy transition-all duration-200 hover:bg-navy hover:text-white"
               >
-                {card.cta} →
+                {card.cta} &rarr;
               </Link>
             </article>
           ))}

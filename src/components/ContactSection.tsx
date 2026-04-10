@@ -5,11 +5,17 @@ import Link from "next/link";
 
 import { enquiryTypes } from "@/lib/site-data";
 import { SectionHeading } from "@/components/SectionHeading";
+import { useReveal } from "@/hooks/useReveal";
 
 export function ContactSection() {
+  const revealRef = useReveal<HTMLDivElement>();
+
   return (
-    <section id="contact" className="bg-navy px-6 py-20 md:px-10 md:py-32">
-      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.75fr_1.25fr]">
+    <section id="contact" className="navy-glow px-6 py-section-mobile md:px-10 md:py-section">
+      <div
+        ref={revealRef}
+        className="mx-auto grid max-w-content gap-14 lg:grid-cols-[0.75fr_1px_1.25fr]"
+      >
         <div>
           <SectionHeading
             label="CONTACT"
@@ -18,21 +24,26 @@ export function ContactSection() {
             inverted
           />
 
-          <div className="mt-10 border-l-4 border-teal bg-cream p-6 text-charcoal">
-            <p className="font-body text-base leading-7">
+          <div className="mt-10 border-l-4 border-teal bg-cream p-6 text-body">
+            <p className="font-body text-body-primary">
               Facing an urgent crisis? Contact CRC PR directly for immediate support.
             </p>
             <Link
               href="https://crcpr.com.au"
-              className="mt-4 inline-flex font-body text-sm font-medium text-teal underline-offset-4 hover:underline"
+              className="group mt-4 inline-flex font-body text-[14px] font-medium text-teal transition-all duration-200 hover:underline hover:underline-offset-4"
             >
-              crcpr.com.au →
+              crcpr.com.au{" "}
+              <span className="ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1">
+                &rarr;
+              </span>
             </Link>
           </div>
         </div>
 
+        <div className="hidden bg-white/[0.15] lg:block" aria-hidden="true" />
+
         <form
-          className="grid gap-5 rounded-sm bg-transparent"
+          className="grid gap-5"
           onSubmit={(event) => event.preventDefault()}
         >
           <div className="grid gap-5 md:grid-cols-2">
@@ -61,7 +72,7 @@ export function ContactSection() {
               id="enquiryType"
               name="enquiryType"
               defaultValue=""
-              className="h-12 border border-[#3A4A6C] bg-ink px-4 font-body text-base text-white outline-none transition-colors focus:border-teal"
+              className="h-12 border border-[#3A4D6E] bg-ink-dark px-4 font-body text-[15px] text-white outline-none transition-colors duration-200 focus:border-teal"
             >
               <option value="" disabled className="text-charcoal">
                 Select an enquiry type
@@ -78,19 +89,19 @@ export function ContactSection() {
               id="message"
               name="message"
               rows={4}
-              className="min-h-32 border border-[#3A4A6C] bg-ink px-4 py-3 font-body text-base text-white outline-none transition-colors focus:border-teal"
+              className="min-h-32 border border-[#3A4D6E] bg-ink-dark px-4 py-3 font-body text-[15px] text-white outline-none transition-colors duration-200 focus:border-teal"
               placeholder="Share a little about the situation or support you need."
             />
           </Field>
 
           <button
             type="submit"
-            className="mt-2 bg-teal px-6 py-4 font-body text-sm font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-white hover:text-navy"
+            className="mt-2 h-[52px] w-full bg-teal font-body text-[15px] font-medium tracking-[0.03em] text-white transition-all duration-200 hover:bg-teal-dark hover:scale-[1.01]"
           >
             Send Enquiry
           </button>
 
-          <p className="font-body text-sm text-white/55">
+          <p className="font-body text-body-secondary text-white/50">
             This form is currently a front-end placeholder until a live submission
             endpoint is provided.
           </p>
@@ -111,7 +122,9 @@ function Field({
 }) {
   return (
     <label htmlFor={htmlFor} className="grid gap-2">
-      <span className="font-body text-sm text-white/70">{label}</span>
+      <span className="font-body text-[13px] font-normal uppercase tracking-[0.08em] text-white/60">
+        {label}
+      </span>
       {children}
     </label>
   );
@@ -131,7 +144,7 @@ function Input({
       id={id}
       name={name}
       type={type}
-      className="h-12 border border-[#3A4A6C] bg-ink px-4 font-body text-base text-white outline-none transition-colors focus:border-teal"
+      className="h-12 border border-[#3A4D6E] bg-ink-dark px-4 font-body text-[15px] text-white outline-none transition-colors duration-200 focus:border-teal"
     />
   );
 }

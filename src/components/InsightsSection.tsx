@@ -1,33 +1,44 @@
+"use client";
+
 import Link from "next/link";
 
 import { insights } from "@/lib/site-data";
 import { SectionHeading } from "@/components/SectionHeading";
+import { useReveal } from "@/hooks/useReveal";
 
 export function InsightsSection() {
+  const revealRef = useReveal<HTMLDivElement>();
+
   return (
-    <section id="insights" className="bg-white px-6 py-20 md:px-10 md:py-32">
-      <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[0.7fr_1.3fr]">
+    <section id="insights" className="grain bg-cream px-6 py-section-mobile md:px-10 md:py-section">
+      <div ref={revealRef} className="mx-auto grid max-w-content gap-heading-gap lg:grid-cols-[0.7fr_1.3fr]">
         <SectionHeading
           label="INSIGHTS"
           title="150 Words."
-          description="Sharp perspectives on crisis, reputation, and the communications decisions that define organisations. Lyall's regular column distils complex issues into clear, actionable thinking."
+          description="Sharp perspectives on crisis, reputation, and the communications decisions that define organisations. Lyall&apos;s regular column distils complex issues into clear, actionable thinking."
         />
 
         <div>
           <div className="grid gap-10 md:grid-cols-3">
             {insights.map((article) => (
-              <article key={article.slug} className="border-b border-line pb-8">
-                <h3 className="font-display text-2xl font-bold text-navy">
+              <article
+                key={article.slug}
+                className="border-b border-line pb-8"
+              >
+                <h3 className="font-display text-card-title font-bold text-navy">
                   {article.title}
                 </h3>
-                <p className="mt-4 font-body text-[15px] leading-7 text-charcoal/80">
+                <p className="mt-4 font-body text-body-secondary text-muted">
                   {article.excerpt}
                 </p>
                 <Link
                   href="/insights"
-                  className="mt-6 inline-flex font-body text-sm font-medium text-teal underline-offset-4 hover:underline"
+                  className="group mt-6 inline-flex font-body text-[14px] font-medium text-teal transition-all duration-200 hover:underline hover:underline-offset-4"
                 >
-                  Read →
+                  Read{" "}
+                  <span className="ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1">
+                    &rarr;
+                  </span>
                 </Link>
               </article>
             ))}
@@ -35,9 +46,12 @@ export function InsightsSection() {
 
           <Link
             href="/insights"
-            className="mt-10 inline-flex font-body text-base font-medium text-teal underline-offset-4 hover:underline"
+            className="group mt-10 inline-flex font-body text-body-primary font-medium text-teal transition-all duration-200 hover:underline hover:underline-offset-4"
           >
-            View all insights →
+            View all insights{" "}
+            <span className="ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1">
+              &rarr;
+            </span>
           </Link>
         </div>
       </div>

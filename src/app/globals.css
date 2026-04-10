@@ -13,7 +13,7 @@ html {
 body {
   margin: 0;
   background: #f5f2ec;
-  color: #1a1a1a;
+  color: #2a2a2a;
   font-family: var(--font-dm-sans), sans-serif;
 }
 
@@ -30,6 +30,7 @@ a {
   background: rgba(5, 138, 148, 0.18);
 }
 
+/* Grain texture for cream-background sections */
 .grain {
   position: relative;
 }
@@ -39,10 +40,62 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
-  background-image:
-    radial-gradient(rgba(43, 58, 92, 0.08) 0.7px, transparent 0.7px),
-    radial-gradient(rgba(212, 208, 200, 0.35) 0.7px, transparent 0.7px);
-  background-position: 0 0, 14px 14px;
-  background-size: 28px 28px;
+  z-index: 1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Radial glow for navy-background sections */
+.navy-glow {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 40%, #324468 0%, #2B3A5C 60%);
+}
+
+/* Section reveal animation keyframes */
+@keyframes sectionFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.reveal-visible {
+  animation: sectionFadeUp 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* Stagger children within a revealed parent */
+.reveal-stagger > *:nth-child(1) { animation-delay: 0s; }
+.reveal-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.reveal-stagger > *:nth-child(3) { animation-delay: 0.2s; }
+.reveal-stagger > *:nth-child(4) { animation-delay: 0.3s; }
+.reveal-stagger > *:nth-child(5) { animation-delay: 0.4s; }
+.reveal-stagger > *:nth-child(6) { animation-delay: 0.5s; }
+.reveal-stagger > *:nth-child(7) { animation-delay: 0.6s; }
+
+/* Portrait teal overlay reveal */
+@keyframes portraitReveal {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.portrait-reveal {
+  animation: portraitReveal 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards;
+}
+
+/* Stat counter element */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }

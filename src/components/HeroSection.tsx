@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -178,7 +178,7 @@ export function HeroSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: () => `+=${window.innerHeight * (isMobile ? 3 : 4)}`,
+        end: () => `+=${window.innerHeight * 5}`,
         pin,
         scrub: true,
         invalidateOnRefresh: true,
@@ -188,10 +188,24 @@ export function HeroSection() {
             FRAME_COUNT - 1,
             Math.floor(progress * (FRAME_COUNT - 1)),
           );
-          const nextStage = Math.min(
-            heroStages.length - 1,
-            Math.floor(progress * heroStages.length),
-          );
+
+          // Dwell zones: first 10% holds stage 0, last 10% holds final stage.
+          // The middle 80% is divided equally among the 4 stages.
+          const DWELL_START = 0.10;
+          const DWELL_END = 0.10;
+          const activeRange = 1 - DWELL_START - DWELL_END;
+          let nextStage: number;
+          if (progress <= DWELL_START) {
+            nextStage = 0;
+          } else if (progress >= 1 - DWELL_END) {
+            nextStage = heroStages.length - 1;
+          } else {
+            const inner = (progress - DWELL_START) / activeRange;
+            nextStage = Math.min(
+              heroStages.length - 1,
+              Math.floor(inner * heroStages.length),
+            );
+          }
 
           if (stageRef.current !== nextStage) {
             stageRef.current = nextStage;
@@ -210,7 +224,7 @@ export function HeroSection() {
     };
   }, [isLoaded, isMobile, queueDraw]);
 
-  const heroHeight = useMemo(() => (isMobile ? "300vh" : "400vh"), [isMobile]);
+  const heroHeight = "500vh";
 
   return (
     <section
@@ -224,6 +238,7 @@ export function HeroSection() {
 
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.66)_0%,rgba(0,0,0,0.45)_32%,rgba(0,0,0,0.08)_58%,rgba(0,0,0,0)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(0,0,0,0.5),transparent_22%)]" />
+        <div className="absolute inset-x-0 top-0 h-[120px] bg-[linear-gradient(180deg,rgba(0,0,0,0.4)_0%,transparent_100%)]" />
 
         <div
           className={`absolute inset-0 z-20 flex items-center justify-center bg-black transition-opacity duration-500 ${
@@ -243,35 +258,35 @@ export function HeroSection() {
               return (
                 <div
                   key={index}
-                  className={`absolute left-[8vw] top-1/2 max-w-[540px] -translate-y-1/2 transition-opacity duration-300 ${
+                  className={`absolute left-[8vw] top-1/2 max-w-[540px] -translate-y-1/2 transition-opacity duration-[250ms] ${
                     isActive ? "opacity-100" : "pointer-events-none opacity-0"
                   }`}
                   style={{ willChange: "opacity" }}
                 >
                   {"heading" in stage ? (
                     <>
-                      <h1 className="font-display text-[32px] font-bold uppercase leading-tight tracking-[0.02em] text-white md:text-[56px]">
+                      <h1 className="font-display text-[32px] font-bold uppercase leading-[1.1] tracking-[0.03em] text-white md:text-[56px]">
                         {stage.heading}
                       </h1>
-                      <p className="mt-6 font-body text-base leading-8 text-white/90 md:text-[20px]">
+                      <p className="mt-6 font-body text-[15px] leading-[1.7] text-white/85 md:text-[17px]">
                         {stage.body}
                       </p>
                     </>
                   ) : (
                     <>
-                      <p className="font-display text-[36px] font-bold uppercase tracking-[0.08em] text-white md:text-[72px]">
+                      <p className="font-display text-[36px] font-bold uppercase leading-[1.1] tracking-[0.03em] text-white md:text-[72px]">
                         {stage.name}
                       </p>
-                      <p className="mt-5 font-body text-lg text-white md:text-[22px]">
+                      <p className="mt-5 font-body text-[17px] text-white/90 md:text-[20px]">
                         {stage.descriptor}
                       </p>
-                      <p className="mt-4 font-body text-base leading-8 text-white/90 md:text-[20px]">
+                      <p className="mt-4 font-body text-[15px] leading-[1.7] text-white/75 md:text-[17px]">
                         {stage.subtext}
                       </p>
                       <div className="mt-8 flex flex-col items-start gap-6">
                         <Link
                           href="#contact"
-                          className="bg-teal px-6 py-3 font-body text-sm font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-navy"
+                          className="bg-teal px-9 py-4 font-body text-[15px] font-medium tracking-[0.03em] text-white transition-all duration-200 hover:bg-[#047A84] hover:scale-[1.01]"
                         >
                           Work with Lyall
                         </Link>

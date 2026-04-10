@@ -25,13 +25,9 @@ export function Navigation() {
 
       allSections.forEach((id) => {
         const section = document.getElementById(id);
-
-        if (!section) {
-          return;
-        }
+        if (!section) return;
 
         const rect = section.getBoundingClientRect();
-
         if (rect.top <= window.innerHeight * 0.35 && rect.bottom >= window.innerHeight * 0.35) {
           currentSection = id;
         }
@@ -54,18 +50,14 @@ export function Navigation() {
     ? "border-transparent bg-transparent text-white"
     : "border-line bg-cream/95 text-navy backdrop-blur";
 
-  const buttonClasses = heroActive
-    ? "border-teal text-white hover:bg-teal"
-    : "border-teal text-teal hover:bg-teal hover:text-white";
-
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${chromeClasses}`}
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-[400ms] ease-out ${chromeClasses}`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
+      <div className="mx-auto flex h-[72px] max-w-content items-center justify-between px-6 md:px-10">
         <Link
           href="#hero"
-          className="font-display text-lg font-bold uppercase tracking-[0.08em] md:text-xl"
+          className="font-display text-[18px] font-bold uppercase tracking-[0.08em]"
         >
           Lyall Mercer
         </Link>
@@ -78,19 +70,24 @@ export function Navigation() {
               <Link
                 key={item.id}
                 href={item.href}
-                className={`font-body text-sm font-medium uppercase tracking-[0.08em] transition-colors ${
-                  isActive ? "text-teal" : ""
-                }`}
+                className="group relative font-body text-[14px] font-normal uppercase tracking-[0.04em] transition-colors"
               >
-                <span className={isActive ? "border-b-2 border-teal pb-1" : "pb-1"}>
-                  {item.label}
-                </span>
+                {item.label}
+                <span
+                  className={`absolute -bottom-1 left-0 h-[2px] bg-teal transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </Link>
             );
           })}
           <Link
             href="#contact"
-            className={`border px-4 py-2 font-body text-sm font-medium transition-colors ${buttonClasses}`}
+            className={`border px-4 py-2 font-body text-[14px] font-normal uppercase tracking-[0.04em] transition-all duration-200 ${
+              heroActive
+                ? "border-white/50 text-white hover:border-white hover:bg-white/10"
+                : "border-navy text-navy hover:bg-navy hover:text-white"
+            }`}
           >
             Get in touch
           </Link>
@@ -104,9 +101,9 @@ export function Navigation() {
         >
           <span className="sr-only">Toggle navigation</span>
           <div className="space-y-1.5">
-            <span className={`block h-0.5 w-6 ${heroActive ? "bg-white" : "bg-navy"}`} />
-            <span className={`block h-0.5 w-6 ${heroActive ? "bg-white" : "bg-navy"}`} />
-            <span className={`block h-0.5 w-6 ${heroActive ? "bg-white" : "bg-navy"}`} />
+            <span className={`block h-0.5 w-6 transition-colors ${heroActive ? "bg-white" : "bg-navy"}`} />
+            <span className={`block h-0.5 w-6 transition-colors ${heroActive ? "bg-white" : "bg-navy"}`} />
+            <span className={`block h-0.5 w-6 transition-colors ${heroActive ? "bg-white" : "bg-navy"}`} />
           </div>
         </button>
       </div>
@@ -119,7 +116,7 @@ export function Navigation() {
                 key={item.id}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="font-body text-sm font-medium uppercase tracking-[0.08em]"
+                className="font-body text-[14px] font-normal uppercase tracking-[0.04em]"
               >
                 {item.label}
               </Link>
@@ -127,7 +124,11 @@ export function Navigation() {
             <Link
               href="#contact"
               onClick={() => setMenuOpen(false)}
-              className={`mt-2 inline-flex w-fit border px-4 py-2 font-body text-sm font-medium transition-colors ${buttonClasses}`}
+              className={`mt-2 inline-flex w-fit border px-4 py-2 font-body text-[14px] font-normal uppercase tracking-[0.04em] transition-all duration-200 ${
+                heroActive
+                  ? "border-white/50 text-white"
+                  : "border-navy text-navy"
+              }`}
             >
               Get in touch
             </Link>
